@@ -33,7 +33,7 @@ public class MainController {
 
     //выводим все сообщения с бд
     @GetMapping("/main")
-    public String main(@RequestParam (required = false, defaultValue = " ") String filter, Model model) {
+    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Message> messages = messageRepo.findAll();
         //filter  поиск по тегу
         if (filter != null && !filter.isEmpty()) {
@@ -44,6 +44,7 @@ public class MainController {
 
         model.addAttribute("messages", messages);
         model.addAttribute("filter", filter);
+
         return "main";
     }
 

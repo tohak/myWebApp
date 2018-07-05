@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
@@ -12,11 +13,14 @@ import java.util.Set;
 @Table(name="usr")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Name is required")// не занесет в базу пустое поле
     private String username;
+    @NotBlank(message = "Name is required")
     private String password;
     private boolean active;
+    private String email;
 // создание еще 1 таблици  роли связаной с юзером
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)  // указать какой класс и подгрузка две таблици или по необходимости
     @CollectionTable(name="user_role", joinColumns = @JoinColumn (name = "user_id"))  // название таблици и связаное поле
@@ -24,6 +28,14 @@ public class User implements UserDetails {
     private Set<UserRole> roles;
 
     public User() {
+    }
+
+    public User(@NotBlank(message = "Name is required") String username, @NotBlank(message = "Name is required") String password, boolean active, String email, Set<UserRole> roles) {
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.email = email;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -36,6 +48,14 @@ public class User implements UserDetails {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
