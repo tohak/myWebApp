@@ -23,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                     .authorizeRequests()   // без авторизации нечего нельзя делать
-                    .antMatchers("/", "/registration").permitAll() // перейти на эту страницу может только пользователи групп(все)
+                    .antMatchers("/", "/registration", "/static/**").permitAll() // перейти на эту страницу может только пользователи групп(все)
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //ходить по бд  табличка юзер и их роли
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService) //подключаем dataSource для  ходьбы по бд
+        auth.userDetailsService(userService) //шифруем пароль
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 }

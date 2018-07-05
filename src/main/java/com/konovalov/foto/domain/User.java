@@ -90,4 +90,8 @@ public class User implements UserDetails {
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
+    // проверка с бд берет данные узнает админ или нет
+    public boolean isAdmin(){
+        return roles.contains(UserRole.ADMIN);
+    }
 }

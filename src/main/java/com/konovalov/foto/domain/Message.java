@@ -7,13 +7,14 @@ import javax.persistence.*;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private  int id;
+    private int id;
 
     private String text;
     private String tag;
-    @ManyToOne (fetch = FetchType.EAGER)
-    @JoinColumn(name= "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User author;
+    private String filename;
 
     public Message() {
     }
@@ -28,11 +29,21 @@ public class Message {
         this.tag = tag;
         this.author = author;
     }
-    public  String getAuthorName(){
-        return author !=null ? author.getUsername(): "<no name>";
+
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "<no name>";
     }
+
     public User getAuthor() {
         return author;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public void setAuthor(User author) {

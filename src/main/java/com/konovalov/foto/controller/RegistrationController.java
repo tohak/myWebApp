@@ -24,16 +24,17 @@ public class RegistrationController {
         return "registration";
     }
 
-    // пост запрос по имени юзера, если такой есть сообщаем на странице регистрации
+    // пост запрос по имени юзера,
     @PostMapping("/registration")
     public String addUser(User user, Map<String, Object> model) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
-
-        if (userFromDb != null) {
-            model.put("message", "User exists!");
+        //если такой есть сообщаем на странице регистрации
+        if (userFromDb != null || user.getUsername().isEmpty()) {
+            model.put("message", "User exists or wrong user name!");
             return "registration";
         }
 
+        // если нет сохраняем в базу
         user.setActive(true);
         user.setRoles(Collections.singleton(UserRole.USER));
         userRepo.save(user);

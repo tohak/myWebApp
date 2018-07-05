@@ -13,7 +13,7 @@ public class UserService implements UserDetailsService {
 @Autowired
     private UserRepo userRepo;
 
-    //метод возрашение пользователя
+    //метод возрашение пользователя по имени
     @Override
     public UserDetails loadUserByUsername(String username   ) throws UsernameNotFoundException {
         return userRepo.findByUsername(username);
