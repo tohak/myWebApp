@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
@@ -17,9 +18,14 @@ public class User implements UserDetails {
     private Long id;
     @NotBlank(message = "Name is required")// не занесет в базу пустое поле
     private String username;
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Password connot empty")
     private String password;
+    @Transient   //транзитный в базу не будет писаться
+    @NotBlank(message = "Password confirmation cannot be corect")
+    private String password2;
     private boolean active;
+    @NotBlank(message = "Name is required")
+    @Email(message = "Email is not corect")
     private String email;
 // создание еще 1 таблици  роли связаной с юзером
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)  // указать какой класс и подгрузка две таблици или по необходимости
@@ -36,6 +42,14 @@ public class User implements UserDetails {
         this.active = active;
         this.email = email;
         this.roles = roles;
+    }
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
     }
 
     public Long getId() {

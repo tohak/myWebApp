@@ -1,14 +1,18 @@
 package com.konovalov.foto.domain;
 
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @NotBlank(message = "Input text message")
+    @Length(max = 2000, message = "limit linght message 2000 ")
     private String text;
     private String tag;
     @ManyToOne(fetch = FetchType.EAGER)
