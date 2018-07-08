@@ -5,6 +5,7 @@ package com.konovalov.foto.controller;
 import com.konovalov.foto.repository.MessageRepo;
 import com.konovalov.foto.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 // удаление сообщений
+@PreAuthorize("hasAuthority('ADMIN')") // даем доступ только админам
 @Controller
 public class MessageController {
     @Autowired
