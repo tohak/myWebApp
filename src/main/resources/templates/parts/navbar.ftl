@@ -21,6 +21,11 @@
                 <a class="nav-link" href="/user">List users</a>
             </li>
             </#if>
+            <#if isAdmin>
+            <li class="nav-item">
+                <a class="nav-link" href="/messagesList">List messages</a>
+            </li>
+            </#if>
         </ul>
 
         <div class="navbar- mr-3">${name}</div>

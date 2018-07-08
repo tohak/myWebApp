@@ -1,7 +1,7 @@
 package com.konovalov.foto.controller;
 
 
-import com.konovalov.foto.domain.Message;
+
 import com.konovalov.foto.repository.MessageRepo;
 import com.konovalov.foto.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-
+// удаление сообщений
 @Controller
 public class MessageController {
     @Autowired
@@ -27,19 +27,8 @@ public class MessageController {
     }
     @PostMapping("messagesList")
     public String messagesdelete(
-            @RequestParam("toDelete[]") Long[] toDelete){
-        for (long id: toDelete){
-            System.out.printf("message aaa "+id);
-            Message messageY=messageRepo.findById(id);
-            System.out.println(messageY);
-        }
-
-//        if (toDelete != null && toDelete.length > 0){
-//            for (long id: toDelete) {
-//                System.out.printf("message aaaa"+ id);
-//                messageRepo.delete(messageRepo.findById(id));
-//            }
-//        }
+            @RequestParam("toDelete[]") int[] toDelete){
+       messageService.deleteMessages(toDelete);
 
         return "redirect:/main";
     }

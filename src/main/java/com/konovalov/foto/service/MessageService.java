@@ -1,6 +1,6 @@
 package com.konovalov.foto.service;
 
-import com.konovalov.foto.domain.Message;
+
 import com.konovalov.foto.repository.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 public class MessageService {
     @Autowired
     MessageRepo messageRepo;
-        public void deleteMessages(Long[] idList) {
-        for (long id : idList) {
-            System.out.printf("messages aaaa "+ id);
+        public void deleteMessages(int[] idList) {
+        for (int id : idList) {
             messageRepo.delete(messageRepo.findById(id));
         }
 

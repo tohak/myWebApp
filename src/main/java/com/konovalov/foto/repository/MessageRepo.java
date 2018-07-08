@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface MessageRepo extends CrudRepository <Message, Long> {
     //метод поиска в бд всех по тегу
     List<Message> findByTag (String tag);
-    Message findById(long id);
 
-    void removeById(long id);
+    Message findById(int id);
+
 }
