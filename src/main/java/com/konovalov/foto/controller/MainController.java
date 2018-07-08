@@ -61,10 +61,9 @@ public class MainController {
             Model model,
             @RequestParam("file") MultipartFile file) throws IOException {
         message.setAuthor(user);
-        // если есть ошибки  обрабатівать и вівод во вью, если нет ошибок делать запись в бд
+        // если есть ошибки  обрабатывать и вывод во вью, если нет ошибок делать запись в бд
         if (bindingResult.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
         }else {
@@ -82,6 +81,7 @@ public class MainController {
                 file.transferTo(new File(uploadPath + "/" + resultFilename));
                 message.setFilename(resultFilename);
             }
+            model.addAttribute("message", null);
             messageRepo.save(message);
         }
         //выводим на вью

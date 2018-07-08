@@ -12,8 +12,9 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank(message = "Input text message")
-    @Length(max = 2000, message = "limit linght message 2000 ")
+    @Length(max = 2000, message = "limit light message 2000 ")
     private String text;
+    @Length(max = 255, message = "limit light tag 255 ")
     private String tag;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -78,4 +79,14 @@ public class Message {
         this.tag = tag;
     }
 
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", tag='" + tag + '\'' +
+                ", author=" + author +
+                ", filename='" + filename + '\'' +
+                '}';
+    }
 }

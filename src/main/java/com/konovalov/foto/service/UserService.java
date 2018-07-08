@@ -23,7 +23,12 @@ public class UserService implements UserDetailsService {
     //метод возрашение пользователя по имени
     @Override
     public UserDetails loadUserByUsername(String username   ) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username);
+        User user = userRepo.findByUsername(username);
+        if (user== null){
+            throw new UsernameNotFoundException ("User not found");
+        }
+        return user;
+
     }
     // добавление пользователя
     public boolean addUser(User user){

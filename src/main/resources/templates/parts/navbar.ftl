@@ -24,6 +24,11 @@
         </ul>
 
         <div class="navbar- mr-3">${name}</div>
+    <#if singUser??>
         <@l.logout />
+    <#else >
+        <@l.loginn />
+    </#if>
+
     </div>
 </nav>
