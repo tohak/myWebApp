@@ -54,12 +54,13 @@
             <artifactId>heroku-jdbc</artifactId>
             <version>0.1.1</version>
         </dependency>
-        <!--  управлени и логи бд-->
+        <!--  управлени и логи бд
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>4.2.0</version>
         </dependency>
+        -->
         <!-- security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
