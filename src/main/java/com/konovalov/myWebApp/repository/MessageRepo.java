@@ -1,10 +1,9 @@
-package com.konovalov.foto.repository;
+package com.konovalov.myWebApp.repository;
 
-import com.konovalov.foto.domain.Message;
+import com.konovalov.myWebApp.domain.Message;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MessageRepo extends CrudRepository <Message, Long> {
     //метод поиска в бд всех по тегу

@@ -1,4 +1,4 @@
-package com.konovalov.foto.config;
+package com.konovalov.myWebApp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

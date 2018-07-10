@@ -1,10 +1,10 @@
-package com.konovalov.foto.controller;
+package com.konovalov.myWebApp.controller;
 
 
 
 
-import com.konovalov.foto.domain.User;
-import com.konovalov.foto.service.UserService;
+import com.konovalov.myWebApp.domain.User;
+import com.konovalov.myWebApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

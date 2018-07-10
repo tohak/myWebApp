@@ -1,6 +1,6 @@
-package com.konovalov.foto.config;
+package com.konovalov.myWebApp.config;
 
-import com.konovalov.foto.service.UserService;
+import com.konovalov.myWebApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

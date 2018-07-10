@@ -1,6 +1,6 @@
-package com.konovalov.foto.repository;
+package com.konovalov.myWebApp.repository;
 
-import com.konovalov.foto.domain.User;
+import com.konovalov.myWebApp.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepo extends JpaRepository<User, Long> {

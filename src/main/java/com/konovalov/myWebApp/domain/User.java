@@ -1,4 +1,4 @@
-package com.konovalov.foto.domain;
+package com.konovalov.myWebApp.domain;
 
 
 import org.springframework.security.core.GrantedAuthority;

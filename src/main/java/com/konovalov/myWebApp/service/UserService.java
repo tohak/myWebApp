@@ -1,9 +1,9 @@
-package com.konovalov.foto.service;
+package com.konovalov.myWebApp.service;
 
 
-import com.konovalov.foto.domain.User;
-import com.konovalov.foto.domain.UserRole;
-import com.konovalov.foto.repository.UserRepo;
+import com.konovalov.myWebApp.domain.User;
+import com.konovalov.myWebApp.domain.UserRole;
+import com.konovalov.myWebApp.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

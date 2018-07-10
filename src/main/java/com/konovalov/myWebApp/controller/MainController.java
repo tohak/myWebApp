@@ -1,8 +1,8 @@
-package com.konovalov.foto.controller;
+package com.konovalov.myWebApp.controller;
 
-import com.konovalov.foto.domain.Message;
-import com.konovalov.foto.domain.User;
-import com.konovalov.foto.repository.MessageRepo;
+import com.konovalov.myWebApp.domain.Message;
+import com.konovalov.myWebApp.domain.User;
+import com.konovalov.myWebApp.repository.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 public class MainController {

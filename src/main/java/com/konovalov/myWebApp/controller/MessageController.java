@@ -1,9 +1,9 @@
-package com.konovalov.foto.controller;
+package com.konovalov.myWebApp.controller;
 
 
 
-import com.konovalov.foto.repository.MessageRepo;
-import com.konovalov.foto.service.MessageService;
+import com.konovalov.myWebApp.repository.MessageRepo;
+import com.konovalov.myWebApp.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

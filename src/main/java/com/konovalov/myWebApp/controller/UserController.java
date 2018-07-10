@@ -1,9 +1,9 @@
-package com.konovalov.foto.controller;
+package com.konovalov.myWebApp.controller;
 
 
-import com.konovalov.foto.domain.User;
-import com.konovalov.foto.domain.UserRole;
-import com.konovalov.foto.repository.UserRepo;
+import com.konovalov.myWebApp.domain.User;
+import com.konovalov.myWebApp.domain.UserRole;
+import com.konovalov.myWebApp.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

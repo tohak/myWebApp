@@ -1,4 +1,4 @@
-package com.konovalov.foto.controller;
+package com.konovalov.myWebApp.controller;
 
 
 import org.springframework.validation.BindingResult;
