@@ -24,6 +24,7 @@ public class User implements UserDetails {
     @NotBlank(message = "Name is required")
     @Email(message = "Email is not correct")
     private String email;
+    private String activationCode;
 // создание еще 1 таблици  роли связаной с юзером
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)  // указать какой класс и подгрузка две таблици или по необходимости
     @CollectionTable(name="user_role", joinColumns = @JoinColumn (name = "user_id"))  // название таблици и связаное поле
@@ -39,6 +40,14 @@ public class User implements UserDetails {
         this.active = active;
         this.email = email;
         this.roles = roles;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 
     public Long getId() {
