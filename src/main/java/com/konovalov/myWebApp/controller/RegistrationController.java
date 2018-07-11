@@ -58,8 +58,11 @@ public class RegistrationController {
             model.addAttribute("usernameError", "User exists or wrong user name!");
             return "registration";
         }
+        // вывод сообщения об успешной регистрации
+        model.addAttribute("message",
+                String.format("Thank you for registering, activation code sent to your Email: %s!", user.getEmail()));
 
-        return "redirect:/login";
+        return "login";
     }
     //сообщаем об активации
     @GetMapping("/activate/{code}")

@@ -72,8 +72,7 @@
 </#macro>
 
 <#macro loginn>
-<form action="/login" method="post">
-    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+<form action="/login" method="Get">
     <button class="btn btn-primary" type="submit">Sing in</button>
 </form>
 </#macro>

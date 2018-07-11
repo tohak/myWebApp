@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                     .authorizeRequests()   // без авторизации нечего нельзя делать
-                    .antMatchers("/", "/registration", "/static/**").permitAll() // перейти на эту страницу может только пользователи групп(все)
+                    .antMatchers("/", "/registration", "/static/**","/activate/*").permitAll() // перейти на эту страницу может только пользователи групп(все)
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
