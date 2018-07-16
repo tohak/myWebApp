@@ -20,7 +20,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     //  выводить лист пользователей
-    @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам(по всем метадам, если  нужно отдельно что то то обозначать метод)
+    @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userService.findAll());
@@ -28,7 +28,7 @@ public class UserController {
         return "userList";
     }
     // редактор пользователей  вывод вользователей и ролей
-    @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам(по всем метадам, если  нужно отдельно что то то обозначать метод)
+    @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
@@ -37,7 +37,7 @@ public class UserController {
         return "userEdit";
     }
     //  получение новых параметров редактирования  и сохранение пользоватя
-    @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам(по всем метадам, если  нужно отдельно что то то обозначать метод)
+    @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам
     @PostMapping
     public String userSave(
             @RequestParam String username,    //  получаение нового имени пользователя
