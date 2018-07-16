@@ -9,10 +9,11 @@
         </form>
     </div>
 </div>
-
+<#if isUserAut??>
 <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     Add new Message
 </a>
+</#if>
 <div class="collapse <#if message??>show</#if>" id="collapseExample">
     <div class="form-group mt-3">
         <form method="post" enctype="multipart/form-data">
@@ -46,6 +47,7 @@
         </form>
     </div>
 </div>
+
     <#list messages as message>
         <div class="card my-3" style="width: 18rem;">
         <#if message.filename??>

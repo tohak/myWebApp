@@ -126,4 +126,9 @@ public class User implements UserDetails {
     public boolean isAdmin(){
         return roles.contains(UserRole.ADMIN);
     }
+    public boolean isUserAut(){
+        return roles.contains(UserRole.USER);
+    }
+
+
 }

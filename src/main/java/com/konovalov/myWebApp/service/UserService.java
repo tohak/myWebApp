@@ -4,6 +4,7 @@ package com.konovalov.myWebApp.service;
 import com.konovalov.myWebApp.domain.User;
 import com.konovalov.myWebApp.domain.UserRole;
 import com.konovalov.myWebApp.repository.UserRepo;
+import com.konovalov.myWebApp.service.utils.RandomPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -26,6 +27,8 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private MailSender mailSender;
+
+
     @Value("${url.mail.activation}")
     private String stringUrl;
 
@@ -49,7 +52,7 @@ public class UserService implements UserDetailsService {
         }
         // если нет сохраняем в базу
         user.setActive(true);
-        user.setRoles(Collections.singleton(UserRole.USER));
+        user.setRoles(Collections.singleton(UserRole.ANONYMOUS));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActivationCode(UUID.randomUUID().toString());
         userRepo.save(user);
@@ -80,6 +83,8 @@ public class UserService implements UserDetailsService {
             return false;
         }
         user.setActivationCode(null);
+        user.getRoles().clear();
+       user.getRoles().add(UserRole.USER);
         userRepo.save(user);
         return true;
     }
@@ -107,8 +112,8 @@ public class UserService implements UserDetailsService {
 
         userRepo.save(user);
     }
-
-    public void updateProfile(User user, String password, String email) {
+// релактирование своего профиля
+    public void updateProfile(User user, String passwordold, String password, String password2, String email) {
         String userEmail = user.getEmail();
 
         boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
@@ -121,12 +126,33 @@ public class UserService implements UserDetailsService {
                 user.setActivationCode(UUID.randomUUID().toString());
             }
         }
-        if (!StringUtils.isEmpty(password)){
-            user.setPassword(password);
+        boolean isOldPassword= passwordEncoder.matches(passwordold, user.getPassword()) ;// сравнивать  старый введенный пароль и пароль с бд
+
+        if (!StringUtils.isEmpty(password) && password.equals(password2)&& isOldPassword){
+            user.setPassword(passwordEncoder.encode(password));
         }
         userRepo.save(user);
         if (isEmailChanged) {
             sendMessage(user);
         }
     }
+
+    // сброс пароля
+    public  void refreshPassword(String userName, String email){
+        String refreshPassword= new RandomPassword().whenGeneratingRandomString();
+        User user=userRepo.findByUsername(userName);
+        if (user!=null && StringUtils.isEmpty(email)&& user.getEmail().equals(email)){
+            String message = String.format(
+                    "Hello, %s! \n" +
+                            "Hello,%s. You new password:  %s",
+                    user.getUsername(),
+                    refreshPassword);
+
+            mailSender.send(user.getEmail(),"You New password", message);
+            user.setPassword(passwordEncoder.encode(refreshPassword));
+            userRepo.save(user);
+        }
+
+    }
+
 }

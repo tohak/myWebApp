@@ -5,6 +5,7 @@ import com.konovalov.myWebApp.domain.User;
 import com.konovalov.myWebApp.repository.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,6 +52,7 @@ public class MainController {
     }
 
     //берем с вью текс и тег и сохраняем его в базу, после выводим на страницу
+    @PreAuthorize("hasAuthority('ADMIN') or ('USER')") // даем доступ
     @PostMapping("/main")
     public String add(
             @AuthenticationPrincipal User user,    // получение пользователя

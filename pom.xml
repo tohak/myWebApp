@@ -61,6 +61,17 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>1.5.13.RELEASE</version>
         </dependency>
+        <!-- session -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-jdbc</artifactId>
+        </dependency>
+        <!-- библиотека рандом строки -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
+        </dependency>
 
     </dependencies>
 
