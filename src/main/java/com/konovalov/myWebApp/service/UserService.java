@@ -138,7 +138,7 @@ public class UserService implements UserDetailsService {
     }
 
     // сброс пароля
-    public  void refreshPassword(String userName, String email){
+    public  boolean refreshPassword(String userName, String email){
         String refreshPassword= new RandomPassword().whenGeneratingRandomString();
         User user=userRepo.findByUsername(userName);
         if (user!=null && StringUtils.isEmpty(email)&& user.getEmail().equals(email)){
@@ -151,8 +151,9 @@ public class UserService implements UserDetailsService {
             mailSender.send(user.getEmail(),"You New password", message);
             user.setPassword(passwordEncoder.encode(refreshPassword));
             userRepo.save(user);
+            return true;
         }
-
+        return false;
     }
 
 }

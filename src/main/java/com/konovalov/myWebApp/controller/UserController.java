@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+
 // контроллер пользователей
 @Controller
 @RequestMapping("/user")
@@ -19,6 +20,7 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
     //  выводить лист пользователей
     @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам
     @GetMapping
@@ -27,6 +29,7 @@ public class UserController {
 
         return "userList";
     }
+
     // редактор пользователей  вывод вользователей и ролей
     @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам
     @GetMapping("{user}")
@@ -36,6 +39,7 @@ public class UserController {
 
         return "userEdit";
     }
+
     //  получение новых параметров редактирования  и сохранение пользоватя
     @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам
     @PostMapping
@@ -50,20 +54,39 @@ public class UserController {
     }
 
     // изменение профайла пользователем
-    @GetMapping ("profile")
+    @GetMapping("profile")
     public String getProfile(Model model,
-                             @AuthenticationPrincipal User user){    // получение пользователя из сессии( берет авторизировоного пользователя)
-     model.addAttribute("username", user.getUsername());
-     model.addAttribute("email", user.getEmail());
-     return "profile";
+                             @AuthenticationPrincipal User user) {    // получение пользователя из сессии( берет авторизировоного пользователя)
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+        return "profile";
     }
+
     @PostMapping("profile")
     public String updateProfile(@AuthenticationPrincipal User user,
                                 @RequestParam String passwordold,
                                 @RequestParam String password,
                                 @RequestParam String password2,
-                                @RequestParam String email){
-        userService.updateProfile(user, passwordold,password, password2,email);
+                                @RequestParam String email) {
+        userService.updateProfile(user, passwordold, password, password2, email);
         return "redirect:/user/profile";
+    }
+
+    @GetMapping("passwordreset")
+    public String passwordreset() {
+        return "passwordreset";
+    }
+
+    @PostMapping("passwordreset")
+    public String updatePasswordReset(@RequestParam String username,
+                                      @RequestParam String email,
+                                      Model model){
+       boolean isRefreshPassword= userService.refreshPassword(username,email);
+        if (isRefreshPassword){
+            model.addAttribute("message", "New password sent to e-mail");
+        }else {
+            model.addAttribute("message", "user or mail entered incorrectly");
+        }
+        return "passwordreset";
     }
 }
