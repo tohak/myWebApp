@@ -59,6 +59,9 @@ public class UserController {
                              @AuthenticationPrincipal User user) {    // получение пользователя из сессии( берет авторизировоного пользователя)
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
+        if (userService.isUserRole(user, UserRole.ANONYMOUS)){
+            model.addAttribute("message", "ANONYMOUS user");
+        }
         return "profile";
     }
 
@@ -85,7 +88,7 @@ public class UserController {
         if (isRefreshPassword){
             model.addAttribute("message", "New password sent to e-mail");
         }else {
-            model.addAttribute("message", "user or mail entered incorrectly");
+            model.addAttribute("message", "User or mail entered incorrectly");
         }
         return "passwordreset";
     }

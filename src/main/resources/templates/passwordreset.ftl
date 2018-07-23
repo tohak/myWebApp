@@ -2,7 +2,11 @@
 
 <@c.page>
 Password reset
-
+<#if message??>
+<div class="alert alert-primary" role="alert">
+    ${message}
+</div>
+</#if>
 <form method="post">
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">User name:</label>

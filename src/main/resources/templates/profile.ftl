@@ -2,24 +2,26 @@
 
 <@c.page>
 <h5>${username}</h5>
-        ${message?ifExists}
+<#if message??>
+    ${message}
+</#if>
 <form method="post">
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Old password:</label>
         <div class="col-sm-6">
-            <input type="passwordold" name="passwordold" class="form-control" placeholder="Password" />
+            <input type="password" name="passwordold" class="form-control" placeholder="Password" />
         </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">New password:</label>
         <div class="col-sm-6">
-            <input type="password" name="password" class="form-control" placeholder="Password" />
+            <input type="password" name="password" class="form-control" placeholder="New Password" />
         </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">New password2:</label>
         <div class="col-sm-6">
-            <input type="password2" name="password2" class="form-control" placeholder="Password" />
+            <input type="password" name="password2" class="form-control" placeholder="New Password" />
         </div>
     </div>
     <div class="form-group row">

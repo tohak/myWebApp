@@ -4,3 +4,5 @@ profile: add change password, encoder password
 add role annom user
 refresh password service
 
+update 2:
+ refresh password full

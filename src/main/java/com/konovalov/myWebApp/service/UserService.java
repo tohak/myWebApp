@@ -141,10 +141,11 @@ public class UserService implements UserDetailsService {
     public  boolean refreshPassword(String userName, String email){
         String refreshPassword= new RandomPassword().whenGeneratingRandomString();
         User user=userRepo.findByUsername(userName);
-        if (user!=null && StringUtils.isEmpty(email)&& user.getEmail().equals(email)){
+        if (user!=null && !StringUtils.isEmpty(email)&& user.getEmail().equals(email)){
+            System.out.println("message email");
             String message = String.format(
                     "Hello, %s! \n" +
-                            "Hello,%s. You new password:  %s",
+                            " You new password:  %s",
                     user.getUsername(),
                     refreshPassword);
 
@@ -152,6 +153,16 @@ public class UserService implements UserDetailsService {
             user.setPassword(passwordEncoder.encode(refreshPassword));
             userRepo.save(user);
             return true;
+        }
+        return false;
+    }
+    //узнать пренадлежит ли юзер этой роли группы
+    public  boolean isUserRole(User user, UserRole userRole){
+        Set<UserRole> userRoleSet = user.getRoles();
+        for (UserRole role:userRoleSet) {
+            if (role==userRole){
+                return true;
+            }
         }
         return false;
     }
