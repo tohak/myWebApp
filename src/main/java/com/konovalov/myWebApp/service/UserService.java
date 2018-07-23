@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
         return true;
     }
 //отправка активации почты
-    private void sendMessage(User user) {
+   public void sendMessage(User user) {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +

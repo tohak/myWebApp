@@ -9,6 +9,7 @@ known = Session.SPRING_SECURITY_CONTEXT??
     isAdmin = user.isAdmin()
     singUser = true
     isUserAut= user.isUserAut()
+    isAnonymous= user.isAnonymous()
     >
 <#else>
     <#assign

@@ -129,6 +129,9 @@ public class User implements UserDetails {
     public boolean isUserAut(){
         return roles.contains(UserRole.USER);
     }
+    public boolean isAnonymous(){
+        return roles.contains(UserRole.ANONYMOUS);
+    }
 
 
 }

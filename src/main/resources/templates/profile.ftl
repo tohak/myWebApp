@@ -1,10 +1,14 @@
 <#import "parts/common.ftl" as c>
-
+<#include "parts/security.ftl">
 <@c.page>
+
 <h5>${username}</h5>
 <#if message??>
     ${message}
 </#if>
+    <#if isAnonymous><a href="/reactivateemail">Reactivate email</a>
+
+    </#if>
 <form method="post">
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Old password:</label>
