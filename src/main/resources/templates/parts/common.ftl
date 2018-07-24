@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/static/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
-        body { background: url(static/images/background.jpg) ;
+        body { background: url("../static/images/background.jpg") ;
             background-size: cover;
             color: white;}
     </style>

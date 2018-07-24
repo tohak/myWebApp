@@ -6,3 +6,5 @@ refresh password service
 
 update 2:
  refresh password full
+refresh activation email full
+fix access background.jpg

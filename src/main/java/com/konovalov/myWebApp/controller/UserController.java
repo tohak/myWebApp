@@ -60,7 +60,7 @@ public class UserController {
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
         if (userService.isUserRole(user, UserRole.ANONYMOUS)){
-            model.addAttribute("message", "ANONYMOUS user");
+            model.addAttribute("message", "To work on the site you need to activate mail");
         }
         return "profile";
     }
@@ -74,7 +74,7 @@ public class UserController {
         userService.updateProfile(user, passwordold, password, password2, email);
         return "redirect:/user/profile";
     }
-
+    //  сброс пароля на почту
     @GetMapping("passwordreset")
     public String passwordreset() {
         return "passwordreset";
@@ -92,6 +92,7 @@ public class UserController {
         }
         return "passwordreset";
     }
+    //  повторная активация почты
     @GetMapping("reactivateemail")
     public String setReactivateemail  (Model model,
                              @AuthenticationPrincipal User user) {    // получение пользователя из сессии( берет авторизировоного пользователя)

@@ -86,7 +86,7 @@ public class RegistrationController {
         model.addAttribute("message",
                 String.format("Thank you for registering, activation code sent to your Email: %s!", user.getEmail()));
 
-        return "redirect:/login";
+        return "login";
     }
     //сообщаем об активации
     @GetMapping("/activate/{code}")
