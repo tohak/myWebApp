@@ -61,6 +61,14 @@ public class UserService implements UserDetailsService {
 
         return true;
     }
+    // проверка на сущестующую почту
+    public boolean checkEmailUsr(User user){
+        User userBd=userRepo.findByEmail(user.getEmail());
+       if (userBd == null){
+           return true;
+       }
+        return  false;
+    }
 //отправка активации почты
    public void sendMessage(User user) {
         if (!StringUtils.isEmpty(user.getEmail())) {

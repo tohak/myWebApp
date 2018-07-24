@@ -93,11 +93,11 @@ public class UserController {
         return "passwordreset";
     }
     @GetMapping("reactivateemail")
-    public String setReactivateemail (){
-//            (Model model,
-//                             @AuthenticationPrincipal User user) {    // получение пользователя из сессии( берет авторизировоного пользователя)
-//            userService.sendMessage(user);
-//            model.addAttribute("message", "Activation code sent to your e-mail");
+    public String setReactivateemail  (Model model,
+                             @AuthenticationPrincipal User user) {    // получение пользователя из сессии( берет авторизировоного пользователя)
+        model.addAttribute("username", user.getUsername());
+        userService.sendMessage(user);
+            model.addAttribute("message", "Activation code sent to your e-mail");
 
         return "reactivateemail";
     }

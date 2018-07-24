@@ -67,8 +67,12 @@ public class RegistrationController {
         if (user.getPassword()!=null && user.getPassword().equals(passwordConfim)){
             model.addAttribute("passwordError", "password are different!");
         }
+        // проверка на сущестующий имейл
+        if (!userService.checkEmailUsr(user)){
+            model.addAttribute("emailError", "such mail already exists");
+        }
         //вывод ошибки если есть
-        if (isConfirmEmpty || bindingResult.hasErrors()|| !response.isSuccess()){
+        if (isConfirmEmpty || bindingResult.hasErrors()|| !response.isSuccess() ||!userService.checkEmailUsr(user) ){
             Map<String, String> errors=ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errors);          //merge  потому что мап
             return "registration";

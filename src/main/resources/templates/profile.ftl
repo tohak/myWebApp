@@ -6,7 +6,7 @@
 <#if message??>
     ${message}
 </#if>
-    <#if isAnonymous><a href="/reactivateemail">Reactivate email</a>
+    <#if isAnonymous><a href="/user/reactivateemail">Reactivate email</a>
 
     </#if>
 <form method="post">
