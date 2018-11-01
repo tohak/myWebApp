@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity (prePostEnabled = true) // включить глобальній поиск прав доступа по проєкту
+@EnableGlobalMethodSecurity (prePostEnabled = true) // включить глобальный поиск прав доступа по проєкту
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                     .authorizeRequests()   // без авторизации нечего нельзя делать
-                    .antMatchers("/", "/registration","/reactivateemail", "/user/passwordreset", "/static/**","/static/images/**", "/activate/**").permitAll() // перейти на эту страницу может только пользователи групп(все)
+                    .antMatchers("/", "/h2-console/**", "/registration","/reactivateemail", "/user/passwordreset", "/static/**","/static/images/**", "/activate/**").permitAll() // перейти на эту страницу может только пользователи групп(все)
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
