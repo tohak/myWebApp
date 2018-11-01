@@ -33,10 +33,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .permitAll()
                 .and()
+                    .csrf().ignoringAntMatchers("/h2-console/**")   // добавить в защите игнор консоле
+                .and()
                     .rememberMe()
                 .and()
                     .logout()
-                    .permitAll();
+                    .permitAll()
+                .and()
+                    .headers().frameOptions().sameOrigin();// разрешить использовать frame с одинаковыми url
     }
 
 //ходить по бд  табличка юзер и их роли
