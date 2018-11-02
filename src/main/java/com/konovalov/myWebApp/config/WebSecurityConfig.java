@@ -8,42 +8,45 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity (prePostEnabled = true) // включить глобальный поиск прав доступа по проєкту
+@EnableGlobalMethodSecurity(prePostEnabled = true) // включить глобальный поиск прав доступа по проєкту
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-//куда какой доступ по страницам
+    @Autowired
+    public WebSecurityConfig(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    //куда какой доступ по страницам
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                    .authorizeRequests()   // без авторизации нечего нельзя делать
-                    .antMatchers("/", "/h2-console/**", "/registration","/reactivateemail", "/user/passwordreset", "/static/**","/static/images/**", "/activate/**").permitAll() // перейти на эту страницу может только пользователи групп(все)
-                    .anyRequest().authenticated()
+                .authorizeRequests()   // без авторизации нечего нельзя делать
+                .antMatchers("/", "/h2-console/**", "/registration", "/reactivateemail", "/user/passwordreset", "/static/**", "/static/images/**", "/activate/**").permitAll() // перейти на эту страницу может только пользователи групп(все)
+                .anyRequest().authenticated()
                 .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
                 .and()
-                    .csrf().ignoringAntMatchers("/h2-console/**")   // добавить в защите игнор консоле
+                .csrf().ignoringAntMatchers("/h2-console/**")   // добавить в защите игнор консоле
                 .and()
-                    .rememberMe()
+                .rememberMe()
                 .and()
-                    .logout()
-                    .permitAll()
+                .logout()
+                .permitAll()
                 .and()
-                    .headers().frameOptions().sameOrigin();// разрешить использовать frame с одинаковыми url
+                .headers().frameOptions().sameOrigin();// разрешить использовать frame с одинаковыми url
     }
 
-//ходить по бд  табличка юзер и их роли
+    //ходить по бд  табличка юзер и их роли
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService) //шифруем пароль

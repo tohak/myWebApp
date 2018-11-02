@@ -1,15 +1,12 @@
 package com.konovalov.myWebApp.repository;
 
 import com.konovalov.myWebApp.domain.Message;
-import org.springframework.data.repository.CrudRepository;
+import com.konovalov.myWebApp.repository.common.BaseRepository;
 
 import java.util.List;
 
-public interface MessageRepo extends CrudRepository <Message, Long> {
-    //метод поиска в бд всех по тегу
-    List<Message> findByTag (String tag);
+public interface MessageRepo extends BaseRepository<Message, Long> {
+    List<Message> findByTag(String tag);
 
-    Message findById(int id);
-
-
+    //Optional<Message> findById(Long id);
 }

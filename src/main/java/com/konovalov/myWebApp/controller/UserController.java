@@ -18,8 +18,12 @@ import java.util.Map;
 @RequestMapping("/user")
 
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     //  выводить лист пользователей
     @PreAuthorize("hasAuthority('ADMIN')") // обозначить прова только админам
@@ -59,7 +63,7 @@ public class UserController {
                              @AuthenticationPrincipal User user) {    // получение пользователя из сессии( берет авторизировоного пользователя)
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
-        if (userService.isUserRole(user, UserRole.ANONYMOUS)){
+        if (userService.isUserRole(user, UserRole.ANONYMOUS)) {
             model.addAttribute("message", "To work on the site you need to activate mail");
         }
         return "profile";
@@ -74,6 +78,7 @@ public class UserController {
         userService.updateProfile(user, passwordold, password, password2, email);
         return "redirect:/user/profile";
     }
+
     //  сброс пароля на почту
     @GetMapping("passwordreset")
     public String passwordreset() {
@@ -83,22 +88,23 @@ public class UserController {
     @PostMapping("passwordreset")
     public String updatePasswordReset(@RequestParam String username,
                                       @RequestParam String email,
-                                      Model model){
-       boolean isRefreshPassword= userService.refreshPassword(username,email);
-        if (isRefreshPassword){
+                                      Model model) {
+        boolean isRefreshPassword = userService.refreshPassword(username, email);
+        if (isRefreshPassword) {
             model.addAttribute("message", "New password sent to e-mail");
-        }else {
+        } else {
             model.addAttribute("message", "User or mail entered incorrectly");
         }
         return "passwordreset";
     }
+
     //  повторная активация почты
     @GetMapping("reactivateemail")
-    public String setReactivateemail  (Model model,
-                             @AuthenticationPrincipal User user) {    // получение пользователя из сессии( берет авторизировоного пользователя)
+    public String setReactivateemail(Model model,
+                                     @AuthenticationPrincipal User user) {    // получение пользователя из сессии( берет авторизировоного пользователя)
         model.addAttribute("username", user.getUsername());
         userService.sendMessage(user);
-            model.addAttribute("message", "Activation code sent to your e-mail");
+        model.addAttribute("message", "Activation code sent to your e-mail");
 
         return "reactivateemail";
     }

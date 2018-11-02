@@ -1,7 +1,6 @@
 package com.konovalov.myWebApp.controller;
 
 
-
 import com.konovalov.myWebApp.repository.MessageRepo;
 import com.konovalov.myWebApp.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +16,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 @PreAuthorize("hasAuthority('ADMIN')") // даем доступ только админам
 @Controller
 public class MessageController {
+    private final MessageRepo messageRepo;
+    private final MessageService messageService;
+
     @Autowired
-    private MessageRepo messageRepo;
-    @Autowired
-    private MessageService messageService;
+    public MessageController(MessageRepo messageRepo, MessageService messageService) {
+        this.messageRepo = messageRepo;
+        this.messageService = messageService;
+    }
 
     @GetMapping("/messagesList")
-    public String messagesList (Model model){
+    public String messagesList(Model model) {
         model.addAttribute("messages", messageRepo.findAll());
         return "messagesList";
     }
+
     @PostMapping("messagesList")
     public String messagesdelete(
-            @RequestParam("toDelete[]") int[] toDelete){
-       messageService.deleteMessages(toDelete);
-
+            @RequestParam("toDelete[]") int[] toDelete) {
+        messageService.deleteMessages(toDelete);
         return "redirect:/main";
     }
 }

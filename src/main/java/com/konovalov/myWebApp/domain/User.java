@@ -1,6 +1,8 @@
 package com.konovalov.myWebApp.domain;
 
 
+import com.konovalov.myWebApp.domain.common.BaseEntity;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,29 +12,49 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
+@Getter
+@Setter
+
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(callSuper = true)
+@Builder
 @Entity
-@Table(name="usr")
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Table(name = "usr_tbl")
+public class User extends BaseEntity implements UserDetails {
+    public static final boolean BUN_NULL = false;
+    public static final int LENGTH = 100;
+
     @NotBlank(message = "Name is required")// не занесет в базу пустое поле
+    @Column(name = "user_name", length = LENGTH, nullable = BUN_NULL)
     private String username;
+
     @NotBlank(message = "Password cannot empty")
+    @Column(name = "password", length = LENGTH, nullable = BUN_NULL)
     private String password;
+
+    @Column(name = "active")
     private boolean active;
+
     @NotBlank(message = "Name is required")
     @Email(message = "Email is not correct")
+    @Column(name = "email", nullable = BUN_NULL, length = LENGTH, unique = true)
     private String email;
+    @Column(name = "activate_code")
     private String activationCode;
-// создание еще 1 таблици  роли связаной с юзером
-    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)  // указать какой класс и подгрузка две таблици или по необходимости
-    @CollectionTable(name="user_role", joinColumns = @JoinColumn (name = "user_id"))  // название таблици и связаное поле
+
+    /**
+     * Тут можно переделать что бы связь была много ко многим, но пока не хочу рушить логику.
+     * Если нада  сдлеать скажите переделаю
+     */
+    // создание еще 1 таблици  роли связаной с юзером
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    // указать какой класс и подгрузка две таблици или по необходимости
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    // название таблици и связаное поле
     @Enumerated(EnumType.STRING)  //  хранение в текстовом
     private Set<UserRole> roles;
 
-    public User() {
-    }
 
     public User(@NotBlank(message = "Name is required") String username, @NotBlank(message = "Name is required") String password, boolean active, String email, Set<UserRole> roles) {
         this.username = username;
@@ -42,33 +64,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public String getActivationCode() {
-        return activationCode;
-    }
-
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -99,37 +94,16 @@ public class User implements UserDetails {
         return getRoles();
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Set<UserRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
-    }
     // проверка с бд берет данные узнает админ или нет
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return roles.contains(UserRole.ADMIN);
     }
-    public boolean isUserAut(){
+
+    public boolean isUserAut() {
         return roles.contains(UserRole.USER);
     }
-    public boolean isAnonymous(){
+
+    public boolean isAnonymous() {
         return roles.contains(UserRole.ANONYMOUS);
     }
 

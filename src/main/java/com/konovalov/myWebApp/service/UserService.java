@@ -4,7 +4,7 @@ package com.konovalov.myWebApp.service;
 import com.konovalov.myWebApp.domain.User;
 import com.konovalov.myWebApp.domain.UserRole;
 import com.konovalov.myWebApp.repository.UserRepo;
-import com.konovalov.myWebApp.service.utils.RandomPassword;
+import com.konovalov.myWebApp.utils.RandomPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -21,16 +21,20 @@ import java.util.stream.Collectors;
 @PropertySource("classpath:mail.properties")
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
-    private UserRepo userRepo;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private MailSender mailSender;
+    private final UserRepo userRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final MailSender mailSender;
 
 
     @Value("${url.mail.activation}")
     private String stringUrl;
+
+    @Autowired
+    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder, MailSender mailSender) {
+        this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.mailSender = mailSender;
+    }
 
     //метод возрашение пользователя по имени
     @Override
@@ -61,16 +65,15 @@ public class UserService implements UserDetailsService {
 
         return true;
     }
+
     // проверка на сущестующую почту
-    public boolean checkEmailUsr(User user){
-        User userBd=userRepo.findByEmail(user.getEmail());
-       if (userBd == null){
-           return true;
-       }
-        return  false;
+    public boolean checkEmailUsr(User user) {
+        User userBd = userRepo.findByEmail(user.getEmail());
+        return userBd == null;
     }
-//отправка активации почты
-   public void sendMessage(User user) {
+
+    //отправка активации почты
+    public void sendMessage(User user) {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
@@ -92,7 +95,7 @@ public class UserService implements UserDetailsService {
         }
         user.setActivationCode(null);
         user.getRoles().clear();
-       user.getRoles().add(UserRole.USER);
+        user.getRoles().add(UserRole.USER);
         userRepo.save(user);
         return true;
     }
@@ -120,7 +123,8 @@ public class UserService implements UserDetailsService {
 
         userRepo.save(user);
     }
-// релактирование своего профиля
+
+    // релактирование своего профиля
     public void updateProfile(User user, String passwordold, String password, String password2, String email) {
         String userEmail = user.getEmail();
 
@@ -134,9 +138,9 @@ public class UserService implements UserDetailsService {
                 user.setActivationCode(UUID.randomUUID().toString());
             }
         }
-        boolean isOldPassword= passwordEncoder.matches(passwordold, user.getPassword()) ;// сравнивать  старый введенный пароль и пароль с бд
+        boolean isOldPassword = passwordEncoder.matches(passwordold, user.getPassword());// сравнивать  старый введенный пароль и пароль с бд
 
-        if (!StringUtils.isEmpty(password) && password.equals(password2)&& isOldPassword){
+        if (!StringUtils.isEmpty(password) && password.equals(password2) && isOldPassword) {
             user.setPassword(passwordEncoder.encode(password));
         }
         userRepo.save(user);
@@ -146,10 +150,10 @@ public class UserService implements UserDetailsService {
     }
 
     // сброс пароля
-    public  boolean refreshPassword(String userName, String email){
-        String refreshPassword= new RandomPassword().whenGeneratingRandomString();
-        User user=userRepo.findByUsername(userName);
-        if (user!=null && !StringUtils.isEmpty(email)&& user.getEmail().equals(email)){
+    public boolean refreshPassword(String userName, String email) {
+        String refreshPassword = new RandomPassword().whenGeneratingRandomString();
+        User user = userRepo.findByUsername(userName);
+        if (user != null && !StringUtils.isEmpty(email) && user.getEmail().equals(email)) {
             System.out.println("message email");
             String message = String.format(
                     "Hello, %s! \n" +
@@ -157,18 +161,19 @@ public class UserService implements UserDetailsService {
                     user.getUsername(),
                     refreshPassword);
 
-            mailSender.send(user.getEmail(),"You New password", message);
+            mailSender.send(user.getEmail(), "You New password", message);
             user.setPassword(passwordEncoder.encode(refreshPassword));
             userRepo.save(user);
             return true;
         }
         return false;
     }
+
     //узнать пренадлежит ли юзер этой роли группы
-    public  boolean isUserRole(User user, UserRole userRole){
+    public boolean isUserRole(User user, UserRole userRole) {
         Set<UserRole> userRoleSet = user.getRoles();
-        for (UserRole role:userRoleSet) {
-            if (role==userRole){
+        for (UserRole role : userRoleSet) {
+            if (role == userRole) {
                 return true;
             }
         }

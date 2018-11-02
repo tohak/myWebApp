@@ -3,7 +3,6 @@ package com.konovalov.myWebApp.controller;
 import com.konovalov.myWebApp.domain.Message;
 import com.konovalov.myWebApp.domain.User;
 import com.konovalov.myWebApp.repository.MessageRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,25 +18,30 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Controller
 public class MainController {
-    @Autowired
-    private MessageRepo messageRepo;
+    private final MessageRepo messageRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
 
+    public MainController(MessageRepo messageRepo) {
+        this.messageRepo = messageRepo;
+    }
+
     @GetMapping("/")
-    public String greeting( Map<String, Object> model) {
+    public String greeting() {
         return "greeting";
     }
 
     //выводим все сообщения с бд
     @GetMapping("/main")
     public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
-        Iterable<Message> messages = messageRepo.findAll();
+        messageRepo.findAll();
+        Iterable<Message> messages;
         //filter  поиск по тегу
         if (filter != null && !filter.isEmpty()) {
             messages = messageRepo.findByTag(filter);
@@ -57,19 +61,19 @@ public class MainController {
     public String add(
             @AuthenticationPrincipal User user,    // получение пользователя
             @Valid
-            Message message,
+                    Message message,
             BindingResult bindingResult,     // для того что бы обрабатывать валиацию, обязательно перед моделью прописывать
             Model model,
             @RequestParam("file") MultipartFile file) throws IOException {
         message.setAuthor(user);
         // если есть ошибки  обрабатывать и вывод во вью, если нет ошибок делать запись в бд
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
-        }else {
+        } else {
             // проверяем файл тот что приходит если его нет или пустое имя пропускаем.
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
+            if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
                 // создаем дерикторию куда сохранять если ее нету
                 File unloadDir = new File(uploadPath);
                 if (!unloadDir.exists()) {
