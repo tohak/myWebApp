@@ -108,7 +108,7 @@ public class UserService implements UserDetailsService {
         userRepo.save(user);
     }
     // релактирование своего профиля
-    public void updateProfile(User user, String passwordold, String password, String password2, String email) {
+    public void updateProfile(User user, String passwordOld, String password, String password2, String email) {
         String userEmail = user.getEmail();
         boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
                 (userEmail != null && !userEmail.equals(email));
@@ -118,7 +118,7 @@ public class UserService implements UserDetailsService {
                 user.setActivationCode(UUID.randomUUID().toString());
             }
         }
-        boolean isOldPassword = passwordEncoder.matches(passwordold, user.getPassword());// сравнивать  старый введенный пароль и пароль с бд
+        boolean isOldPassword = passwordEncoder.matches(passwordOld, user.getPassword());// сравнивать  старый введенный пароль и пароль с бд
         if (!StringUtils.isEmpty(password) && password.equals(password2) && isOldPassword) {
             user.setPassword(passwordEncoder.encode(password));
         }

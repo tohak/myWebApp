@@ -33,12 +33,17 @@
             </#if>
         </ul>
 
-        <div class="navbar- mr-3">${name}</div>
-    <#if singUser??>
-        <@l.logout />
-    <#else >
-        <@l.loginn />
-    </#if>
+        <#--<div class="navbar- mr-3">${name}</div>-->
+    <#--<#if singUser??>-->
+        <#--<@l.logout />-->
+    <#--<#else >-->
+        <#--<@l.loginn />-->
+    <#--</#if>-->
+    <#--</div>-->
+        <div class="navbar-text mr-3"><#if user??>${name}, <@l.logout /><#else>Please, login
+        <form action="/main" method="Get">
+            <button class="btn btn-primary" type="submit">Sing in</button>
+        </form></#if></div>
 
     </div>
 </nav>

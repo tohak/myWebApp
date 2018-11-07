@@ -40,8 +40,12 @@ public class User extends BaseEntity implements UserDetails {
     @Email(message = "Email is not correct")
     @Column(name = "email", nullable = BUN_NULL, length = LENGTH, unique = true)
     private String email;
+
     @Column(name = "activate_code")
     private String activationCode;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Message> messages;
 
     /**
      * Тут можно переделать что бы связь была много ко многим, но пока не хочу рушить логику.

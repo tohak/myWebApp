@@ -28,7 +28,7 @@ public class Message extends BaseEntity {
     @Column(name = "tag_text")
     private String tag;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
 
