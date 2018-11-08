@@ -21,9 +21,14 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "usr_tbl")
-public class User extends BaseEntity implements UserDetails {
+public class User implements UserDetails {
     public static final boolean BUN_NULL = false;
     public static final int LENGTH = 100;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // поставил пока на IDENTITY, знаю что єто для мускула
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long id;
 
     @NotBlank(message = "Name is required")// не занесет в базу пустое поле
     @Column(name = "user_name", length = LENGTH, nullable = BUN_NULL)
@@ -38,14 +43,14 @@ public class User extends BaseEntity implements UserDetails {
 
     @NotBlank(message = "Name is required")
     @Email(message = "Email is not correct")
-    @Column(name = "email", nullable = BUN_NULL, length = LENGTH, unique = true)
+    @Column(name = "email", nullable = BUN_NULL, length = LENGTH)
     private String email;
 
     @Column(name = "activate_code")
     private String activationCode;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Message> messages;
+//    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    private Set<Message> messages;
 
     /**
      * Тут можно переделать что бы связь была много ко многим, но пока не хочу рушить логику.
@@ -60,7 +65,8 @@ public class User extends BaseEntity implements UserDetails {
     private Set<UserRole> roles;
 
 
-    public User(@NotBlank(message = "Name is required") String username, @NotBlank(message = "Name is required") String password, boolean active, String email, Set<UserRole> roles) {
+    public User(Long id, @NotBlank(message = "Name is required") String username, @NotBlank(message = "Name is required") String password, boolean active, String email, Set<UserRole> roles) {
+        this.id= id;
         this.username = username;
         this.password = password;
         this.active = active;

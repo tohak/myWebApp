@@ -1,7 +1,6 @@
 package com.konovalov.web.domain;
 
 
-import com.konovalov.web.domain.common.BaseEntity;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -16,8 +15,12 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @Builder
-public class Message extends BaseEntity {
+public class Message {
     public static final boolean BUN_NULL = false;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // поставил пока на IDENTITY, знаю что єто для мускула
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long id;
 
     @NotBlank(message = "Input text message")
     @Length(max = 2000, message = "limit light message 2000 ")
@@ -35,8 +38,13 @@ public class Message extends BaseEntity {
     private String filename;
 
 
-    public Message(String text, String tag) {
+    public Message(Long id, String text, String tag) {
+        this.id = id;
         this.text = text;
         this.tag = tag;
     }
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "<none>";
+    }
+
 }
