@@ -18,7 +18,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public WebSecurityConfig(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -46,10 +45,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().sameOrigin();// разрешить использовать frame с одинаковыми url
     }
 
-    //ходить по бд  табличка юзер и их роли
+    /**
+     * Адаптация модели безопасности Spring к источнику хранение пользователей;
+     * detailsService - какой сервис использовать для загрузки пользователя по логину;
+     * passwordEncoder - способ шифрование пароля;
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService) //шифруем пароль
+        auth.userDetailsService(userService)
                 .passwordEncoder(passwordEncoder);
     }
 

@@ -12,23 +12,23 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
-@Getter
-@Setter
+//@Getter
+//@Setter
 
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 @ToString(callSuper = true)
-@Builder
+//@Builder
 @Entity
 @Table(name = "usr_tbl")
-public class User implements UserDetails {
+public class User extends BaseEntity implements UserDetails {
     public static final boolean BUN_NULL = false;
     public static final int LENGTH = 100;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // поставил пока на IDENTITY, знаю что єто для мускула
-    @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY) // поставил пока на IDENTITY, знаю что єто для мускула
+//    @Column(name = "id", nullable = false, updatable = false)
+//    private Long id;
 
     @NotBlank(message = "Name is required")// не занесет в базу пустое поле
     @Column(name = "user_name", length = LENGTH, nullable = BUN_NULL)
@@ -64,13 +64,79 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)  //  хранение в текстовом
     private Set<UserRole> roles;
 
+    public User() {
+    }
+    public User(User u) {
+     this(u.getId(),u.getUsername(),u.getPassword(),u.isActive(),u.getEmail(),u.getActivationCode(),u.getRoles());
+    }
 
-    public User(Long id, @NotBlank(message = "Name is required") String username, @NotBlank(message = "Name is required") String password, boolean active, String email, Set<UserRole> roles) {
-        this.id= id;
+
+    public User(long id, @NotBlank(message = "Name is required") String username,
+                @NotBlank(message = "Password cannot empty") String password,
+                boolean active, @NotBlank(message = "Name is required")
+                @Email(message = "Email is not correct")
+                        String email, String activationCode, Set<UserRole> roles) {
+        super(id);
         this.username = username;
         this.password = password;
         this.active = active;
         this.email = email;
+        this.activationCode = activationCode;
+        this.roles = roles;
+    }
+
+    public User(long id, @NotBlank(message = "Name is required") String username, @NotBlank(message = "Name is required") String password, boolean active, String email, Set<UserRole> roles) {
+        super(id);
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.email = email;
+        this.roles = roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
 

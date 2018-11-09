@@ -6,6 +6,7 @@ import com.konovalov.web.domain.UserRole;
 import com.konovalov.web.service.UserService;
 import com.konovalov.web.utils.Constants;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,11 +71,16 @@ public class UserController {
     }
 
     @PostMapping("profile")
-    public String updateProfile(@AuthenticationPrincipal User user,
-                                @RequestParam String passwordold,
-                                @RequestParam String password,
-                                @RequestParam String password2,
-                                @RequestParam String email) {
+    public String updateProfile(
+//            @AuthenticationPrincipal User user,
+            Authentication authentication,
+            @RequestParam String passwordold,
+            @RequestParam String password,
+            @RequestParam String password2,
+            @RequestParam String email) {
+        User user= new User();
+
+        user = (User) authentication.getPrincipal();
         userService.updateProfile(user, passwordold, password, password2, email);
         return "redirect:/user/profile";
     }

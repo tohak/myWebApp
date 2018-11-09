@@ -154,4 +154,11 @@ public class UserService implements UserDetailsService {
         }
         return false;
     }
+
+    //test
+    public boolean getByUserName(String userName){
+      User us= userRepo.findByUsername(userName);
+        System.out.println("id = "+us.getId());
+        return us.getId() != null;
+    }
 }
