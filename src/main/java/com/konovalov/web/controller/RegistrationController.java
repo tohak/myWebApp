@@ -71,11 +71,11 @@ public class RegistrationController {
             model.addAttribute("passwordError", "password are different!");
         }
         // проверка на сущестующий имейл
-        if (!userService.checkEmailUsr(user)) {
+        if (userService.checkEmailUsr(user)) {
             model.addAttribute("emailError", "such mail already exists");
         }
         //вывод ошибки если есть
-        if (isConfirmEmpty || bindingResult.hasErrors() || !response.isSuccess() || !userService.checkEmailUsr(user)) {
+        if (isConfirmEmpty || bindingResult.hasErrors() || !response.isSuccess() || userService.checkEmailUsr(user)) {
             Map<String, String> errors = ControllerErrorHandling.getErrors(bindingResult);
             model.mergeAttributes(errors);          //merge  потому что мап
             return Constants.REGISTRATION;

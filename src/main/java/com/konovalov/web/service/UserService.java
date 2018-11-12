@@ -61,7 +61,7 @@ public class UserService implements UserDetailsService {
     // проверка на сущестующую почту
     public boolean checkEmailUsr(User user) {
         User userBd = userRepo.findByEmail(user.getEmail());
-        return userBd == null;
+        return userBd != null;
     }
     //отправка активации почты
     public void sendMessage(User user) {
@@ -82,7 +82,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
         user.setActivationCode(null);
-        user.getRoles().clear();
+        user.getRoles().remove(UserRole.ANONYMOUS);
         user.getRoles().add(UserRole.USER);
         userRepo.save(user);
         return true;
@@ -92,7 +92,7 @@ public class UserService implements UserDetailsService {
     }
     // редактирование пользователя
     public void saveUser(User user, String username, Map<String, String> form) {
-        user.setUsername(username);    // переименоваем пользователя
+        user.setUsername(username);
         // все отмеченые роли переводим в строку и запихиваем в сет
         Set<String> roles = Arrays.stream(UserRole.values())
                 .map(UserRole::name)
@@ -153,12 +153,5 @@ public class UserService implements UserDetailsService {
             }
         }
         return false;
-    }
-
-    //test
-    public boolean getByUserName(String userName){
-      User us= userRepo.findByUsername(userName);
-        System.out.println("id = "+us.getId());
-        return us.getId() != null;
     }
 }

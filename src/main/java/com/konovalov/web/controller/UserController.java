@@ -72,15 +72,11 @@ public class UserController {
 
     @PostMapping("profile")
     public String updateProfile(
-//            @AuthenticationPrincipal User user,
-            Authentication authentication,
+            @AuthenticationPrincipal User user,
             @RequestParam String passwordold,
             @RequestParam String password,
             @RequestParam String password2,
             @RequestParam String email) {
-        User user= new User();
-
-        user = (User) authentication.getPrincipal();
         userService.updateProfile(user, passwordold, password, password2, email);
         return "redirect:/user/profile";
     }
